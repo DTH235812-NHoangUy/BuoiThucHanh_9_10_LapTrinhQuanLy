@@ -306,6 +306,7 @@
             btnNhap.TabIndex = 8;
             btnNhap.Text = "Nhập...";
             btnNhap.UseVisualStyleBackColor = true;
+            btnNhap.Click += btnNhap_Click;
             // 
             // btnXuat
             // 
@@ -316,6 +317,7 @@
             btnXuat.TabIndex = 9;
             btnXuat.Text = "Xuất...";
             btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Click += btnXuat_Click;
             // 
             // groupBox2
             // 
@@ -338,7 +340,7 @@
             dgvSanPham.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSanPham.Columns.AddRange(new DataGridViewColumn[] { colID, colTenLoai, colTenHangSanXuat, colTenSanPham, colSoLuong, colDonGia, colHinhAnh });
             dgvSanPham.Dock = DockStyle.Fill;
-            dgvSanPham.Location = new Point(3, 22);
+            dgvSanPham.Location = new Point(3, 24);
             dgvSanPham.Margin = new Padding(3, 4, 3, 4);
             dgvSanPham.MultiSelect = false;
             dgvSanPham.Name = "dgvSanPham";
@@ -347,7 +349,7 @@
             dgvSanPham.RowHeadersWidth = 51;
             dgvSanPham.RowTemplate.Height = 40;
             dgvSanPham.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSanPham.Size = new Size(954, 298);
+            dgvSanPham.Size = new Size(954, 296);
             dgvSanPham.TabIndex = 0;
             dgvSanPham.CellFormatting += dgvSanPham_CellFormatting;
             // 

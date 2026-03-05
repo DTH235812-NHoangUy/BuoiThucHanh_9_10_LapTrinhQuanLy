@@ -1,6 +1,8 @@
-﻿using QuanLyBanHang.Data.Entity;
+﻿using ClosedXML.Excel;
+using QuanLyBanHang.Data.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -97,7 +99,8 @@ namespace QuanLyBanHang.Forms
 
             // Binding ImageLocation cho PictureBox
             Binding imgBind = new Binding("ImageLocation", bs, "HinhAnh", true);
-            imgBind.Format += (s, ev) => {
+            imgBind.Format += (s, ev) =>
+            {
                 if (ev.Value != null)
                     ev.Value = Path.Combine(imagesFolder, ev.Value.ToString());
             };
@@ -242,6 +245,163 @@ namespace QuanLyBanHang.Forms
             LoadData();
         }
 
-        private void btnThoat_Click(object sender, EventArgs e) => this.Close();
+        private void btnThoat_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnNhap_Click(object sender, EventArgs e)
+
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Nhập dữ liệu Sản Phẩm từ tập tin Excel";
+            openFileDialog.Filter = "Tập tin Excel|*.xls;*.xlsx";
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    using (XLWorkbook workbook = new XLWorkbook(openFileDialog.FileName))
+                    {
+                        IXLWorksheet worksheet = workbook.Worksheet(1);
+                        bool firstRow = true;
+                        string readRange = "1:1";
+
+                        foreach (IXLRow row in worksheet.RowsUsed())
+                        {
+                            if (firstRow)
+                            {
+                                readRange = string.Format("{0}:{1}", 1, row.LastCellUsed().Address.ColumnNumber);
+                                foreach (IXLCell cell in row.Cells(readRange))
+                                    table.Columns.Add(cell.Value.ToString().Trim());
+                                firstRow = false;
+                            }
+                            else
+                            {
+                                table.Rows.Add();
+                                int cellIndex = 0;
+                                foreach (IXLCell cell in row.Cells(readRange))
+                                {
+                                    table.Rows[table.Rows.Count - 1][cellIndex] = cell.Value.ToString();
+                                    cellIndex++;
+                                }
+                            }
+                        }
+
+                        if (table.Rows.Count > 0)
+                        {
+                            foreach (DataRow r in table.Rows)
+                            {
+                                SanPham sp = new SanPham();
+
+                                // Các trường bắt buộc
+                                sp.TenSanPham = r["TenSanPham"].ToString();
+                                sp.HangSanXuatID = int.Parse(r["HangSanXuatID"].ToString());
+                                sp.LoaiSanPhamID = int.Parse(r["LoaiSanPhamID"].ToString());
+                                sp.DonGia = int.Parse(r["DonGia"].ToString());
+                                sp.SoLuong = int.Parse(r["SoLuong"].ToString());
+
+                                // Các trường có thể rỗng (nullable)
+                                sp.HinhAnh = r["HinhAnh"]?.ToString();
+                                sp.MoTa = r["MoTa"]?.ToString();
+
+                                context.SanPham.Add(sp);
+                            }
+
+                            context.SaveChanges();
+                            MessageBox.Show("Đã nhập thành công " + table.Rows.Count + " sản phẩm.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Cập nhật lại giao diện (Thay tên hàm Load tương ứng của bạn)
+                            frmSanPham_Load(sender, e);
+                        }
+
+                        if (firstRow)
+                            MessageBox.Show("Tập tin Excel rỗng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi dữ liệu: Hãy đảm bảo HangSanXuatID và LoaiSanPhamID là số nguyên hợp lệ.\n Chi tiết: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnXuat_Click(object sender, EventArgs e)
+       
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Xuất dữ liệu Sản Phẩm ra tập tin Excel";
+            saveFileDialog.Filter = "Tập tin Excel|*.xls;*.xlsx";
+            saveFileDialog.FileName = "SanPham_" + DateTime.Now.ToString("dd_MM_yyyy") + ".xlsx";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    // Thiết lập các cột dựa trên class DanhSachSanPham (10 cột)
+                    table.Columns.AddRange(new DataColumn[] {
+                new DataColumn("ID", typeof(int)),
+                new DataColumn("TenSanPham", typeof(string)),
+                new DataColumn("TenHangSanXuat", typeof(string)),
+                new DataColumn("TenLoai", typeof(string)),
+                new DataColumn("DonGia", typeof(int)),
+                new DataColumn("SoLuong", typeof(int)),
+                new DataColumn("HinhAnh", typeof(string)),
+                new DataColumn("MoTa", typeof(string)),
+                new DataColumn("HangSanXuatID", typeof(int)),
+                new DataColumn("LoaiSanPhamID", typeof(int))
+            });
+
+                    // Truy vấn kết hợp (Join) để lấy tên Hãng và tên Loại
+                    var danhSach = context.SanPham.Select(p => new DanhSachSanPham
+                    {
+                        ID = p.ID,
+                        TenSanPham = p.TenSanPham,
+                        TenHangSanXuat = p.HangSanXuat.TenHangSanXuat, // Lấy từ bảng liên kết
+                        TenLoai = p.LoaiSanPham.TenLoai,               // Lấy từ bảng liên kết
+                        DonGia = p.DonGia,
+                        SoLuong = p.SoLuong,
+                        HinhAnh = p.HinhAnh,
+                        MoTa = p.MoTa,
+                        HangSanXuatID = p.HangSanXuatID,
+                        LoaiSanPhamID = p.LoaiSanPhamID
+                    }).ToList();
+
+                    if (danhSach != null)
+                    {
+                        foreach (var p in danhSach)
+                        {
+                            table.Rows.Add(
+                                p.ID,
+                                p.TenSanPham,
+                                p.TenHangSanXuat,
+                                p.TenLoai,
+                                p.DonGia,
+                                p.SoLuong,
+                                p.HinhAnh,
+                                p.MoTa,
+                                p.HangSanXuatID,
+                                p.LoaiSanPhamID
+                            );
+                        }
+                    }
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var sheet = wb.Worksheets.Add(table, "SanPham");
+                        sheet.Columns().AdjustToContents();
+                        wb.SaveAs(saveFileDialog.FileName);
+                        MessageBox.Show("Đã xuất dữ liệu Sản Phẩm ra Excel thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

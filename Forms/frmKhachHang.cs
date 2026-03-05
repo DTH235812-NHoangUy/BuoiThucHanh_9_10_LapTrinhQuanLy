@@ -1,6 +1,8 @@
-﻿using QuanLyBanHang.Data.Entity;
+﻿using ClosedXML.Excel;
+using QuanLyBanHang.Data.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -134,6 +136,131 @@ namespace QuanLyBanHang.Forms
         private void btnThoat_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnNhap_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Nhập dữ liệu Khách Hàng từ tập tin Excel";
+            openFileDialog.Filter = "Tập tin Excel|*.xls;*.xlsx";
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    using (XLWorkbook workbook = new XLWorkbook(openFileDialog.FileName))
+                    {
+                        IXLWorksheet worksheet = workbook.Worksheet(1);
+                        bool firstRow = true;
+                        string readRange = "1:1";
+
+                        foreach (IXLRow row in worksheet.RowsUsed())
+                        {
+                            // Đọc dòng tiêu đề (dòng đầu tiên) để tạo cột cho DataTable
+                            if (firstRow)
+                            {
+                                readRange = string.Format("{0}:{1}", 1, row.LastCellUsed().Address.ColumnNumber);
+                                foreach (IXLCell cell in row.Cells(readRange))
+                                    table.Columns.Add(cell.Value.ToString().Trim());
+                                firstRow = false;
+                            }
+                            else // Đọc các dòng nội dung (các dòng tiếp theo)
+                            {
+                                table.Rows.Add();
+                                int cellIndex = 0;
+                                foreach (IXLCell cell in row.Cells(readRange))
+                                {
+                                    table.Rows[table.Rows.Count - 1][cellIndex] = cell.Value.ToString();
+                                    cellIndex++;
+                                }
+                            }
+                        }
+
+                        if (table.Rows.Count > 0)
+                        {
+                            foreach (DataRow r in table.Rows)
+                            {
+                                KhachHang kh = new KhachHang();
+
+                                // Gán giá trị từ các cột tương ứng trong file Excel
+                                // Lưu ý: Tên cột trong Excel phải khớp chính xác với chuỗi trong r["..."]
+                                kh.HoVaTen = r["HoVaTen"].ToString();
+                                kh.DienThoai = r["DienThoai"]?.ToString();
+                                kh.DiaChi = r["DiaChi"]?.ToString();
+
+                                context.KhachHang.Add(kh);
+                            }
+
+                            context.SaveChanges();
+                            MessageBox.Show("Đã nhập thành công " + table.Rows.Count + " khách hàng.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Gọi hàm Load để cập nhật lại danh sách trên giao diện
+                            frmKhachHang_Load(sender, e);
+                        }
+
+                        if (firstRow)
+                            MessageBox.Show("Tập tin Excel rỗng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+        }
+
+        private void btnXuat_Click(object sender, EventArgs e)
+       
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Xuất dữ liệu Khách Hàng ra tập tin Excel";
+            saveFileDialog.Filter = "Tập tin Excel|*.xls;*.xlsx";
+            // Đặt tên file mặc định kèm ngày tháng
+            saveFileDialog.FileName = "KhachHang_" + DateTime.Now.ToString("dd_MM_yyyy") + ".xlsx";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    // Thiết lập 4 cột dựa trên thuộc tính của lớp KhachHang
+                    table.Columns.AddRange(new DataColumn[4] {
+                new DataColumn("ID", typeof(int)),
+                new DataColumn("HoVaTen", typeof(string)),
+                new DataColumn("DienThoai", typeof(string)),
+                new DataColumn("DiaChi", typeof(string))
+            });
+
+                    // Lấy danh sách khách hàng từ database thông qua context
+                    var danhSachKhachHang = context.KhachHang.ToList();
+
+                    if (danhSachKhachHang != null)
+                    {
+                        foreach (var kh in danhSachKhachHang)
+                        {
+                            // Thêm dữ liệu từng dòng vào DataTable
+                            table.Rows.Add(kh.ID, kh.HoVaTen, kh.DienThoai, kh.DiaChi);
+                        }
+                    }
+
+                    // Sử dụng ClosedXML để tạo và lưu file Excel
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var sheet = wb.Worksheets.Add(table, "KhachHang");
+                        // Tự động căn chỉnh độ rộng cột
+                        sheet.Columns().AdjustToContents();
+
+                        wb.SaveAs(saveFileDialog.FileName);
+                        MessageBox.Show("Đã xuất dữ liệu Khách Hàng ra tập tin Excel thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

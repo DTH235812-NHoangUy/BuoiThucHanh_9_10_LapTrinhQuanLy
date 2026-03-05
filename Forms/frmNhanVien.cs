@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ClosedXML.Excel;
+using Microsoft.EntityFrameworkCore;
 using QuanLyBanHang.Data;
 using QuanLyBanHang.Data.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -236,188 +238,151 @@ namespace QuanLyBanHang.Forms
 
         private void btnNhap_Click(object sender, EventArgs e)
         {
-            using OpenFileDialog ofd = new OpenFileDialog
+
             {
-                Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*",
-                Title = "Chọn file CSV chứa danh sách nhân viên",
-                Multiselect = false
-            };
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Title = "Nhập dữ liệu Nhân Viên từ tập tin Excel";
+                openFileDialog.Filter = "Tập tin Excel|*.xls;*.xlsx";
+                openFileDialog.Multiselect = false;
 
-            if (ofd.ShowDialog() != DialogResult.OK) return;
-
-            string path = ofd.FileName;
-            List<string> lines;
-            try
-            {
-                lines = File.ReadAllLines(path, Encoding.UTF8).ToList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Không thể đọc file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (lines.Count == 0) return;
-
-            static List<string> ParseCsvLine(string line)
-            {
-                var result = new List<string>();
-                var cur = new StringBuilder();
-                bool inQuotes = false;
-
-                for (int i = 0; i < line.Length; i++)
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    char c = line[i];
-                    if (inQuotes)
+                    try
                     {
-                        if (c == '"')
+                        DataTable table = new DataTable();
+                        using (XLWorkbook workbook = new XLWorkbook(openFileDialog.FileName))
                         {
-                            // Handle escaped double quote "" -> "
-                            if (i + 1 < line.Length && line[i + 1] == '"')
+                            IXLWorksheet worksheet = workbook.Worksheet(1);
+                            bool firstRow = true;
+                            string readRange = "1:1";
+
+                            foreach (IXLRow row in worksheet.RowsUsed())
                             {
-                                cur.Append('"');
-                                i++; // skip the escaped quote
+                                // 1. Đọc dòng tiêu đề để tạo cột cho DataTable
+                                if (firstRow)
+                                {
+                                    readRange = string.Format("{0}:{1}", 1, row.LastCellUsed().Address.ColumnNumber);
+                                    foreach (IXLCell cell in row.Cells(readRange))
+                                        table.Columns.Add(cell.Value.ToString().Trim());
+                                    firstRow = false;
+                                }
+                                else // 2. Đọc nội dung dữ liệu
+                                {
+                                    table.Rows.Add();
+                                    int cellIndex = 0;
+                                    foreach (IXLCell cell in row.Cells(readRange))
+                                    {
+                                        table.Rows[table.Rows.Count - 1][cellIndex] = cell.Value.ToString();
+                                        cellIndex++;
+                                    }
+                                }
                             }
-                            else
+
+                            if (table.Rows.Count > 0)
                             {
-                                // end of quoted section
-                                inQuotes = false;
+                                foreach (DataRow r in table.Rows)
+                                {
+                                    NhanVien nv = new NhanVien();
+
+                                    // Gán dữ liệu dựa trên tên cột trong file Excel
+                                    nv.HoVaTen = r["HoVaTen"].ToString();
+                                    nv.DienThoai = r["DienThoai"]?.ToString();
+                                    nv.DiaChi = r["DiaChi"]?.ToString();
+                                    nv.TenDangNhap = r["TenDangNhap"].ToString();
+
+                                    // Đối với mật khẩu, bạn nên xử lý mã hóa nếu cần
+                                    nv.MatKhau = r["MatKhau"].ToString();
+
+                                    // Xử lý kiểu bool cho Quyền hạn (Excel có thể là True/False hoặc 1/0)
+                                    bool quyen;
+                                    if (bool.TryParse(r["QuyenHan"].ToString(), out quyen))
+                                        nv.QuyenHan = quyen;
+                                    else
+                                        nv.QuyenHan = false; // Mặc định nếu lỗi
+
+                                    context.NhanVien.Add(nv);
+                                }
+
+                                context.SaveChanges();
+                                MessageBox.Show("Đã nhập thành công " + table.Rows.Count + " nhân viên.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                // Cập nhật lại GridView hiển thị nhân viên
+                                frmNhanVien_Load(sender, e);
                             }
-                        }
-                        else
-                        {
-                            cur.Append(c);
-                        }
-                    }
-                    else
-                    {
-                        if (c == '"')
-                        {
-                            inQuotes = true;
-                        }
-                        else if (c == ',')
-                        {
-                            // field separator
-                            result.Add(cur.ToString());
-                            cur.Clear();
-                        }
-                        else
-                        {
-                            cur.Append(c);
+
+                            if (firstRow)
+                                MessageBox.Show("Tập tin Excel rỗng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         }
                     }
-                }
-
-                // add last field
-                result.Add(cur.ToString());
-                return result;
-            }
-
-            var headerFields = ParseCsvLine(lines[0]);
-            bool hasHeader = headerFields.Any(h => h.Trim().ToLower().Contains("ten") || h.Trim().ToLower().Contains("ho"));
-            int startLine = hasHeader ? 1 : 0;
-
-            int added = 0, skipped = 0;
-            string defaultPassword = BC.HashPassword("123456");
-
-            for (int i = startLine; i < lines.Count; i++)
-            {
-                var fields = ParseCsvLine(lines[i]);
-                if (fields.Count < 1) { skipped++; continue; }
-
-                string ten = "", sdt = "", diachi = "";
-
-                if (hasHeader)
-                {
-                    for (int c = 0; c < headerFields.Count && c < fields.Count; c++)
+                    catch (Exception ex)
                     {
-                        string col = headerFields[c].Trim().ToLower();
-                        string val = fields[c].Trim();
-                        if (col.Contains("ten") || col.Contains("ho")) ten = val;
-                        else if (col.Contains("sdt") || col.Contains("dien")) sdt = val;
-                        else if (col.Contains("diachi") || col.Contains("dia chi")) diachi = val;
+                        MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                 }
-                else
-                {
-                    ten = fields[0].Trim();
-                    sdt = fields.Count > 1 ? fields[1].Trim() : "";
-                    diachi = fields.Count > 2 ? fields[2].Trim() : "";
-                }
-
-                if (string.IsNullOrWhiteSpace(ten)) { skipped++; continue; }
-
-                try
-                {
-                    NhanVien nv = new NhanVien
-                    {
-                        HoVaTen = ten,
-                        DienThoai = sdt,
-                        DiaChi = diachi,
-                        TenDangNhap = !string.IsNullOrEmpty(sdt) ? sdt : "nv_" + Guid.NewGuid().ToString().Substring(0, 5),
-                        MatKhau = defaultPassword,
-                        QuyenHan = false
-                    };
-                    context.NhanVien.Add(nv);
-                    added++;
-                }
-                catch { skipped++; }
-            }
-
-            try
-            {
-                context.SaveChanges();
-                LoadData(context.NhanVien.ToList());
-                MessageBox.Show($"Thành công! Đã thêm: {added}, Bỏ qua: {skipped}.\nTên đăng nhập mặc định là SĐT, mật khẩu là '123456'.",
-                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi lưu dữ liệu: " + ex.InnerException?.Message ?? ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void btnXuat_Click(object sender, EventArgs e)
         {
-            if (dataGridView.Rows.Count == 0)
+
             {
-                MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Title = "Xuất dữ liệu Nhân Viên ra tập tin Excel";
+                saveFileDialog.Filter = "Tập tin Excel|*.xls;*.xlsx";
+                // Tên file mặc định: NhanVien_Ngày_Tháng_Năm.xlsx
+                saveFileDialog.FileName = "NhanVien_" + DateTime.Now.ToString("dd_MM_yyyy") + ".xlsx";
 
-            using SaveFileDialog sfd = new SaveFileDialog
-            {
-                Filter = "CSV files (*.csv)|*.csv",
-                FileName = "DanhSachNhanVien.csv",
-                Title = "Chọn nơi lưu file CSV"
-            };
-
-            if (sfd.ShowDialog() != DialogResult.OK) return;
-
-            try
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("ID,HoVaTen,DienThoai,DiaChi,TenDangNhap,QuyenHan");
-
-                var danhSach = (List<NhanVien>)bindingSource.DataSource;
-
-                foreach (var nv in danhSach)
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string hoTen = $"\"{nv.HoVaTen}\"";
-                    string dienThoai = $"\"{nv.DienThoai}\"";
-                    string diaChi = $"\"{nv.DiaChi}\"";
-                    string tenDN = $"\"{nv.TenDangNhap}\"";
-                    string quyen = nv.QuyenHan ? "Quản lý" : "Nhân viên";
+                    try
+                    {
+                        DataTable table = new DataTable();
+                        // Thiết lập 7 cột tương ứng với các thuộc tính của lớp NhanVien
+                        table.Columns.AddRange(new DataColumn[7] {
+                new DataColumn("ID", typeof(int)),
+                new DataColumn("HoVaTen", typeof(string)),
+                new DataColumn("DienThoai", typeof(string)),
+                new DataColumn("DiaChi", typeof(string)),
+                new DataColumn("TenDangNhap", typeof(string)),
+                new DataColumn("MatKhau", typeof(string)),
+                new DataColumn("QuyenHan", typeof(bool))
+            });
 
-                    sb.AppendLine($"{nv.ID},{hoTen},{dienThoai},{diaChi},{tenDN},{quyen}");
+                        // Lấy danh sách nhân viên từ Database qua context
+                        var danhSachNhanVien = context.NhanVien.ToList();
+
+                        if (danhSachNhanVien != null)
+                        {
+                            foreach (var nv in danhSachNhanVien)
+                            {
+                                // Thêm dữ liệu từng dòng vào DataTable
+                                table.Rows.Add(
+                                    nv.ID,
+                                    nv.HoVaTen,
+                                    nv.DienThoai,
+                                    nv.DiaChi,
+                                    nv.TenDangNhap,
+                                    nv.MatKhau,
+                                    nv.QuyenHan
+                                );
+                            }
+                        }
+
+                        // Sử dụng thư viện ClosedXML (XLWorkbook)
+                        using (XLWorkbook wb = new XLWorkbook())
+                        {
+                            var sheet = wb.Worksheets.Add(table, "NhanVien");
+                            // Tự động căn chỉnh độ rộng cột theo nội dung
+                            sheet.Columns().AdjustToContents();
+
+                            wb.SaveAs(saveFileDialog.FileName);
+                            MessageBox.Show("Đã xuất dữ liệu Nhân Viên ra tập tin Excel thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi xuất file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-
-                File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
-                MessageBox.Show("Xuất dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi khi xuất file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -28,200 +28,226 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle cellStyleNgayLap = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle cellStyleTongTien = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle cellStyleChiTiet = new System.Windows.Forms.DataGridViewCellStyle();
-
-            this.dgvHoaDon = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NhanVienID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.KhachHangID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NgayLap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TongTien = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.XemChiTiet = new System.Windows.Forms.DataGridViewLinkColumn();
-
-            this.panelBottom = new System.Windows.Forms.Panel();
-            this.btnXuat = new System.Windows.Forms.Button();
-            this.btnTimKiem = new System.Windows.Forms.Button();
-            this.btnThoat = new System.Windows.Forms.Button();
-            this.btnXoa = new System.Windows.Forms.Button();
-            this.btnSua = new System.Windows.Forms.Button();
-            this.btnInHoaDon = new System.Windows.Forms.Button();
-            this.btnLapHoaDon = new System.Windows.Forms.Button();
-
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDon)).BeginInit();
-            this.panelBottom.SuspendLayout();
-            this.SuspendLayout();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            dgvHoaDon = new DataGridView();
+            ID = new DataGridViewTextBoxColumn();
+            NhanVienID = new DataGridViewTextBoxColumn();
+            KhachHangID = new DataGridViewTextBoxColumn();
+            NgayLap = new DataGridViewTextBoxColumn();
+            TongTien = new DataGridViewTextBoxColumn();
+            XemChiTiet = new DataGridViewLinkColumn();
+            panelBottom = new Panel();
+            btnNhap = new Button();
+            btnXuat = new Button();
+            btnTimKiem = new Button();
+            btnThoat = new Button();
+            btnXoa = new Button();
+            btnSua = new Button();
+            btnInHoaDon = new Button();
+            btnLapHoaDon = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvHoaDon).BeginInit();
+            panelBottom.SuspendLayout();
+            SuspendLayout();
             // 
             // dgvHoaDon
             // 
-            this.dgvHoaDon.AllowUserToAddRows = false;
-            this.dgvHoaDon.AllowUserToDeleteRows = false;
-            this.dgvHoaDon.ReadOnly = true;
-            this.dgvHoaDon.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvHoaDon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvHoaDon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ID,
-            this.NhanVienID,
-            this.KhachHangID,
-            this.NgayLap,
-            this.TongTien,
-            this.XemChiTiet});
-            this.dgvHoaDon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvHoaDon.Location = new System.Drawing.Point(0, 0);
-            this.dgvHoaDon.MultiSelect = false;
-            this.dgvHoaDon.Name = "dgvHoaDon";
-            this.dgvHoaDon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvHoaDon.Size = new System.Drawing.Size(950, 390);
-            this.dgvHoaDon.TabIndex = 0;
+            dgvHoaDon.AllowUserToAddRows = false;
+            dgvHoaDon.AllowUserToDeleteRows = false;
+            dgvHoaDon.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvHoaDon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvHoaDon.Columns.AddRange(new DataGridViewColumn[] { ID, NhanVienID, KhachHangID, NgayLap, TongTien, XemChiTiet });
+            dgvHoaDon.Dock = DockStyle.Fill;
+            dgvHoaDon.Location = new Point(0, 0);
+            dgvHoaDon.Margin = new Padding(4, 5, 4, 5);
+            dgvHoaDon.MultiSelect = false;
+            dgvHoaDon.Name = "dgvHoaDon";
+            dgvHoaDon.ReadOnly = true;
+            dgvHoaDon.RowHeadersWidth = 51;
+            dgvHoaDon.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvHoaDon.Size = new Size(1267, 600);
+            dgvHoaDon.TabIndex = 0;
             // 
             // ID
             // 
-            this.ID.DataPropertyName = "ID";
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
+            ID.DataPropertyName = "ID";
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.ReadOnly = true;
             // 
             // NhanVienID
             // 
-            this.NhanVienID.DataPropertyName = "NhanVienID";
-            this.NhanVienID.HeaderText = "Mã nhân viên";
-            this.NhanVienID.Name = "NhanVienID";
+            NhanVienID.DataPropertyName = "NhanVienID";
+            NhanVienID.HeaderText = "Mã nhân viên";
+            NhanVienID.MinimumWidth = 6;
+            NhanVienID.Name = "NhanVienID";
+            NhanVienID.ReadOnly = true;
             // 
             // KhachHangID
             // 
-            this.KhachHangID.DataPropertyName = "KhachHangID";
-            this.KhachHangID.HeaderText = "Mã khách hàng";
-            this.KhachHangID.Name = "KhachHangID";
+            KhachHangID.DataPropertyName = "KhachHangID";
+            KhachHangID.HeaderText = "Mã khách hàng";
+            KhachHangID.MinimumWidth = 6;
+            KhachHangID.Name = "KhachHangID";
+            KhachHangID.ReadOnly = true;
             // 
             // NgayLap
             // 
-            this.NgayLap.DataPropertyName = "NgayLap";
-            cellStyleNgayLap.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            cellStyleNgayLap.Format = "dd/MM/yyyy";
-            this.NgayLap.DefaultCellStyle = cellStyleNgayLap;
-            this.NgayLap.HeaderText = "Ngày lập";
-            this.NgayLap.Name = "NgayLap";
+            NgayLap.DataPropertyName = "NgayLap";
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.Format = "dd/MM/yyyy";
+            NgayLap.DefaultCellStyle = dataGridViewCellStyle1;
+            NgayLap.HeaderText = "Ngày lập";
+            NgayLap.MinimumWidth = 6;
+            NgayLap.Name = "NgayLap";
+            NgayLap.ReadOnly = true;
             // 
             // TongTien
             // 
-            this.TongTien.DataPropertyName = "TongTien";
-            cellStyleTongTien.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            cellStyleTongTien.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            cellStyleTongTien.ForeColor = System.Drawing.Color.Blue;
-            cellStyleTongTien.Format = "N0";
-            this.TongTien.DefaultCellStyle = cellStyleTongTien;
-            this.TongTien.HeaderText = "Tổng tiền";
-            this.TongTien.Name = "TongTien";
+            TongTien.DataPropertyName = "TongTien";
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = Color.Blue;
+            dataGridViewCellStyle2.Format = "N0";
+            TongTien.DefaultCellStyle = dataGridViewCellStyle2;
+            TongTien.HeaderText = "Tổng tiền";
+            TongTien.MinimumWidth = 6;
+            TongTien.Name = "TongTien";
+            TongTien.ReadOnly = true;
             // 
             // XemChiTiet
             // 
-            this.XemChiTiet.DataPropertyName = "XemChiTiet";
-            cellStyleChiTiet.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.XemChiTiet.DefaultCellStyle = cellStyleChiTiet;
-            this.XemChiTiet.HeaderText = "Chi tiết";
-            this.XemChiTiet.Name = "XemChiTiet";
-            this.XemChiTiet.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.XemChiTiet.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            XemChiTiet.DataPropertyName = "XemChiTiet";
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            XemChiTiet.DefaultCellStyle = dataGridViewCellStyle3;
+            XemChiTiet.HeaderText = "Chi tiết";
+            XemChiTiet.MinimumWidth = 6;
+            XemChiTiet.Name = "XemChiTiet";
+            XemChiTiet.ReadOnly = true;
+            XemChiTiet.Resizable = DataGridViewTriState.True;
+            XemChiTiet.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // panelBottom
             // 
-            this.panelBottom.Controls.Add(this.btnXuat);
-            this.panelBottom.Controls.Add(this.btnTimKiem);
-            this.panelBottom.Controls.Add(this.btnThoat);
-            this.panelBottom.Controls.Add(this.btnXoa);
-            this.panelBottom.Controls.Add(this.btnSua);
-            this.panelBottom.Controls.Add(this.btnInHoaDon);
-            this.panelBottom.Controls.Add(this.btnLapHoaDon);
-            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBottom.Location = new System.Drawing.Point(0, 390);
-            this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(950, 60);
-            this.panelBottom.TabIndex = 1;
+            panelBottom.Controls.Add(btnNhap);
+            panelBottom.Controls.Add(btnXuat);
+            panelBottom.Controls.Add(btnTimKiem);
+            panelBottom.Controls.Add(btnThoat);
+            panelBottom.Controls.Add(btnXoa);
+            panelBottom.Controls.Add(btnSua);
+            panelBottom.Controls.Add(btnInHoaDon);
+            panelBottom.Controls.Add(btnLapHoaDon);
+            panelBottom.Dock = DockStyle.Bottom;
+            panelBottom.Location = new Point(0, 600);
+            panelBottom.Margin = new Padding(4, 5, 4, 5);
+            panelBottom.Name = "panelBottom";
+            panelBottom.Size = new Size(1267, 92);
+            panelBottom.TabIndex = 1;
+            // 
+            // btnNhap
+            // 
+            btnNhap.Location = new Point(134, 32);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(94, 29);
+            btnNhap.TabIndex = 7;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = true;
+            btnNhap.Click += btnNhap_Click;
             // 
             // btnXuat
             // 
-            this.btnXuat.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnXuat.Location = new System.Drawing.Point(768, 15);
-            this.btnXuat.Name = "btnXuat";
-            this.btnXuat.Size = new System.Drawing.Size(90, 30);
-            this.btnXuat.TabIndex = 6;
-            this.btnXuat.Text = "Xuất Excel...";
-            this.btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Anchor = AnchorStyles.Top;
+            btnXuat.Location = new Point(1024, 23);
+            btnXuat.Margin = new Padding(4, 5, 4, 5);
+            btnXuat.Name = "btnXuat";
+            btnXuat.Size = new Size(120, 46);
+            btnXuat.TabIndex = 6;
+            btnXuat.Text = "Xuất Excel...";
+            btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Click += btnXuat_Click;
             // 
             // btnTimKiem
             // 
-            this.btnTimKiem.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnTimKiem.Location = new System.Drawing.Point(672, 15);
-            this.btnTimKiem.Name = "btnTimKiem";
-            this.btnTimKiem.Size = new System.Drawing.Size(90, 30);
-            this.btnTimKiem.TabIndex = 5;
-            this.btnTimKiem.Text = "Tìm kiếm...";
-            this.btnTimKiem.UseVisualStyleBackColor = true;
+            btnTimKiem.Anchor = AnchorStyles.Top;
+            btnTimKiem.Location = new Point(896, 23);
+            btnTimKiem.Margin = new Padding(4, 5, 4, 5);
+            btnTimKiem.Name = "btnTimKiem";
+            btnTimKiem.Size = new Size(120, 46);
+            btnTimKiem.TabIndex = 5;
+            btnTimKiem.Text = "Tìm kiếm...";
+            btnTimKiem.UseVisualStyleBackColor = true;
             // 
             // btnThoat
             // 
-            this.btnThoat.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnThoat.Location = new System.Drawing.Point(586, 15);
-            this.btnThoat.Name = "btnThoat";
-            this.btnThoat.Size = new System.Drawing.Size(80, 30);
-            this.btnThoat.TabIndex = 4;
-            this.btnThoat.Text = "Thoát";
-            this.btnThoat.UseVisualStyleBackColor = true;
+            btnThoat.Anchor = AnchorStyles.Top;
+            btnThoat.Location = new Point(781, 23);
+            btnThoat.Margin = new Padding(4, 5, 4, 5);
+            btnThoat.Name = "btnThoat";
+            btnThoat.Size = new Size(107, 46);
+            btnThoat.TabIndex = 4;
+            btnThoat.Text = "Thoát";
+            btnThoat.UseVisualStyleBackColor = true;
             // 
             // btnXoa
             // 
-            this.btnXoa.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnXoa.Location = new System.Drawing.Point(500, 15);
-            this.btnXoa.Name = "btnXoa";
-            this.btnXoa.Size = new System.Drawing.Size(80, 30);
-            this.btnXoa.TabIndex = 3;
-            this.btnXoa.Text = "Xóa";
-            this.btnXoa.UseVisualStyleBackColor = true;
+            btnXoa.Anchor = AnchorStyles.Top;
+            btnXoa.Location = new Point(667, 23);
+            btnXoa.Margin = new Padding(4, 5, 4, 5);
+            btnXoa.Name = "btnXoa";
+            btnXoa.Size = new Size(107, 46);
+            btnXoa.TabIndex = 3;
+            btnXoa.Text = "Xóa";
+            btnXoa.UseVisualStyleBackColor = true;
             // 
             // btnSua
             // 
-            this.btnSua.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnSua.Location = new System.Drawing.Point(414, 15);
-            this.btnSua.Name = "btnSua";
-            this.btnSua.Size = new System.Drawing.Size(80, 30);
-            this.btnSua.TabIndex = 2;
-            this.btnSua.Text = "Sửa...";
-            this.btnSua.UseVisualStyleBackColor = true;
+            btnSua.Anchor = AnchorStyles.Top;
+            btnSua.Location = new Point(552, 23);
+            btnSua.Margin = new Padding(4, 5, 4, 5);
+            btnSua.Name = "btnSua";
+            btnSua.Size = new Size(107, 46);
+            btnSua.TabIndex = 2;
+            btnSua.Text = "Sửa...";
+            btnSua.UseVisualStyleBackColor = true;
             // 
             // btnInHoaDon
             // 
-            this.btnInHoaDon.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnInHoaDon.Location = new System.Drawing.Point(318, 15);
-            this.btnInHoaDon.Name = "btnInHoaDon";
-            this.btnInHoaDon.Size = new System.Drawing.Size(90, 30);
-            this.btnInHoaDon.TabIndex = 1;
-            this.btnInHoaDon.Text = "In hóa đơn...";
-            this.btnInHoaDon.UseVisualStyleBackColor = true;
+            btnInHoaDon.Anchor = AnchorStyles.Top;
+            btnInHoaDon.Location = new Point(424, 23);
+            btnInHoaDon.Margin = new Padding(4, 5, 4, 5);
+            btnInHoaDon.Name = "btnInHoaDon";
+            btnInHoaDon.Size = new Size(120, 46);
+            btnInHoaDon.TabIndex = 1;
+            btnInHoaDon.Text = "In hóa đơn...";
+            btnInHoaDon.UseVisualStyleBackColor = true;
             // 
             // btnLapHoaDon
             // 
-            this.btnLapHoaDon.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnLapHoaDon.Location = new System.Drawing.Point(192, 15);
-            this.btnLapHoaDon.Name = "btnLapHoaDon";
-            this.btnLapHoaDon.Size = new System.Drawing.Size(120, 30);
-            this.btnLapHoaDon.TabIndex = 0;
-            this.btnLapHoaDon.Text = "Lập hóa đơn mới...";
-            this.btnLapHoaDon.UseVisualStyleBackColor = true;
+            btnLapHoaDon.Anchor = AnchorStyles.Top;
+            btnLapHoaDon.Location = new Point(256, 23);
+            btnLapHoaDon.Margin = new Padding(4, 5, 4, 5);
+            btnLapHoaDon.Name = "btnLapHoaDon";
+            btnLapHoaDon.Size = new Size(160, 46);
+            btnLapHoaDon.TabIndex = 0;
+            btnLapHoaDon.Text = "Lập hóa đơn mới...";
+            btnLapHoaDon.UseVisualStyleBackColor = true;
             // 
             // frmHoaDon
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(950, 450);
-            this.Controls.Add(this.dgvHoaDon);
-            this.Controls.Add(this.panelBottom);
-            this.Name = "frmHoaDon";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Hóa đơn";
-
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDon)).EndInit();
-            this.panelBottom.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1267, 692);
+            Controls.Add(dgvHoaDon);
+            Controls.Add(panelBottom);
+            Margin = new Padding(4, 5, 4, 5);
+            Name = "frmHoaDon";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Hóa đơn";
+            ((System.ComponentModel.ISupportInitialize)dgvHoaDon).EndInit();
+            panelBottom.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 
@@ -244,5 +270,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NgayLap;
         private System.Windows.Forms.DataGridViewTextBoxColumn TongTien;
         private System.Windows.Forms.DataGridViewLinkColumn XemChiTiet;
+        private Button btnNhap;
     }
 }

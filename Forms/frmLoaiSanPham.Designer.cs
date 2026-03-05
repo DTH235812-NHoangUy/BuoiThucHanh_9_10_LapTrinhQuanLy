@@ -28,177 +28,216 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnThoat = new System.Windows.Forms.Button();
-            this.btnHuyBo = new System.Windows.Forms.Button();
-            this.btnLuu = new System.Windows.Forms.Button();
-            this.btnXoa = new System.Windows.Forms.Button();
-            this.btnSua = new System.Windows.Forms.Button();
-            this.btnThem = new System.Windows.Forms.Button();
-            this.txtTenLoai = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.dgvLoaiSanPham = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TenLoai = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvLoaiSanPham)).BeginInit();
-            this.SuspendLayout();
+            groupBox1 = new GroupBox();
+            btnXuat = new Button();
+            btnNhap = new Button();
+            btnThoat = new Button();
+            btnHuyBo = new Button();
+            btnLuu = new Button();
+            btnXoa = new Button();
+            btnSua = new Button();
+            btnThem = new Button();
+            txtTenLoai = new TextBox();
+            label1 = new Label();
+            groupBox2 = new GroupBox();
+            dgvLoaiSanPham = new DataGridView();
+            ID = new DataGridViewTextBoxColumn();
+            TenLoai = new DataGridViewTextBoxColumn();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvLoaiSanPham).BeginInit();
+            SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btnThoat);
-            this.groupBox1.Controls.Add(this.btnHuyBo);
-            this.groupBox1.Controls.Add(this.btnLuu);
-            this.groupBox1.Controls.Add(this.btnXoa);
-            this.groupBox1.Controls.Add(this.btnSua);
-            this.groupBox1.Controls.Add(this.btnThem);
-            this.groupBox1.Controls.Add(this.txtTenLoai);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(684, 110);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Thông tin loại sản phẩm";
+            groupBox1.Controls.Add(btnXuat);
+            groupBox1.Controls.Add(btnNhap);
+            groupBox1.Controls.Add(btnThoat);
+            groupBox1.Controls.Add(btnHuyBo);
+            groupBox1.Controls.Add(btnLuu);
+            groupBox1.Controls.Add(btnXoa);
+            groupBox1.Controls.Add(btnSua);
+            groupBox1.Controls.Add(btnThem);
+            groupBox1.Controls.Add(txtTenLoai);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Dock = DockStyle.Top;
+            groupBox1.Location = new Point(0, 0);
+            groupBox1.Margin = new Padding(4, 5, 4, 5);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new Padding(4, 5, 4, 5);
+            groupBox1.Size = new Size(912, 184);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Thông tin loại sản phẩm";
+            // 
+            // btnXuat
+            // 
+            btnXuat.Location = new Point(429, 146);
+            btnXuat.Name = "btnXuat";
+            btnXuat.Size = new Size(94, 29);
+            btnXuat.TabIndex = 9;
+            btnXuat.Text = "Xuất";
+            btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Click += btnXuat_Click;
+            // 
+            // btnNhap
+            // 
+            btnNhap.Location = new Point(246, 147);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(94, 29);
+            btnNhap.TabIndex = 8;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = true;
+            btnNhap.Click += btnNhap_Click;
             // 
             // btnThoat
             // 
-            this.btnThoat.Location = new System.Drawing.Point(580, 65);
-            this.btnThoat.Name = "btnThoat";
-            this.btnThoat.Size = new System.Drawing.Size(75, 25);
-            this.btnThoat.TabIndex = 7;
-            this.btnThoat.Text = "Thoát";
-            this.btnThoat.UseVisualStyleBackColor = true;
-            this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
+            btnThoat.Location = new Point(773, 100);
+            btnThoat.Margin = new Padding(4, 5, 4, 5);
+            btnThoat.Name = "btnThoat";
+            btnThoat.Size = new Size(100, 38);
+            btnThoat.TabIndex = 7;
+            btnThoat.Text = "Thoát";
+            btnThoat.UseVisualStyleBackColor = true;
+            btnThoat.Click += btnThoat_Click;
             // 
             // btnHuyBo
             // 
-            this.btnHuyBo.Location = new System.Drawing.Point(480, 65);
-            this.btnHuyBo.Name = "btnHuyBo";
-            this.btnHuyBo.Size = new System.Drawing.Size(75, 25);
-            this.btnHuyBo.TabIndex = 6;
-            this.btnHuyBo.Text = "Hủy bỏ";
-            this.btnHuyBo.UseVisualStyleBackColor = true;
-            this.btnHuyBo.Click += new System.EventHandler(this.btnHuyBo_Click);
+            btnHuyBo.Location = new Point(640, 100);
+            btnHuyBo.Margin = new Padding(4, 5, 4, 5);
+            btnHuyBo.Name = "btnHuyBo";
+            btnHuyBo.Size = new Size(100, 38);
+            btnHuyBo.TabIndex = 6;
+            btnHuyBo.Text = "Hủy bỏ";
+            btnHuyBo.UseVisualStyleBackColor = true;
+            btnHuyBo.Click += btnHuyBo_Click;
             // 
             // btnLuu
             // 
-            this.btnLuu.ForeColor = System.Drawing.Color.Blue;
-            this.btnLuu.Location = new System.Drawing.Point(380, 65);
-            this.btnLuu.Name = "btnLuu";
-            this.btnLuu.Size = new System.Drawing.Size(75, 25);
-            this.btnLuu.TabIndex = 5;
-            this.btnLuu.Text = "Lưu";
-            this.btnLuu.UseVisualStyleBackColor = true;
-            this.btnLuu.Click += new System.EventHandler(this.btnLuu_Click);
+            btnLuu.ForeColor = Color.Blue;
+            btnLuu.Location = new Point(507, 100);
+            btnLuu.Margin = new Padding(4, 5, 4, 5);
+            btnLuu.Name = "btnLuu";
+            btnLuu.Size = new Size(100, 38);
+            btnLuu.TabIndex = 5;
+            btnLuu.Text = "Lưu";
+            btnLuu.UseVisualStyleBackColor = true;
+            btnLuu.Click += btnLuu_Click;
             // 
             // btnXoa
             // 
-            this.btnXoa.ForeColor = System.Drawing.Color.Red;
-            this.btnXoa.Location = new System.Drawing.Point(280, 65);
-            this.btnXoa.Name = "btnXoa";
-            this.btnXoa.Size = new System.Drawing.Size(75, 25);
-            this.btnXoa.TabIndex = 4;
-            this.btnXoa.Text = "Xóa";
-            this.btnXoa.UseVisualStyleBackColor = true;
-            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
+            btnXoa.ForeColor = Color.Red;
+            btnXoa.Location = new Point(373, 100);
+            btnXoa.Margin = new Padding(4, 5, 4, 5);
+            btnXoa.Name = "btnXoa";
+            btnXoa.Size = new Size(100, 38);
+            btnXoa.TabIndex = 4;
+            btnXoa.Text = "Xóa";
+            btnXoa.UseVisualStyleBackColor = true;
+            btnXoa.Click += btnXoa_Click;
             // 
             // btnSua
             // 
-            this.btnSua.Location = new System.Drawing.Point(180, 65);
-            this.btnSua.Name = "btnSua";
-            this.btnSua.Size = new System.Drawing.Size(75, 25);
-            this.btnSua.TabIndex = 3;
-            this.btnSua.Text = "Sửa";
-            this.btnSua.UseVisualStyleBackColor = true;
-            this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
+            btnSua.Location = new Point(240, 100);
+            btnSua.Margin = new Padding(4, 5, 4, 5);
+            btnSua.Name = "btnSua";
+            btnSua.Size = new Size(100, 38);
+            btnSua.TabIndex = 3;
+            btnSua.Text = "Sửa";
+            btnSua.UseVisualStyleBackColor = true;
+            btnSua.Click += btnSua_Click;
             // 
             // btnThem
             // 
-            this.btnThem.Location = new System.Drawing.Point(80, 65);
-            this.btnThem.Name = "btnThem";
-            this.btnThem.Size = new System.Drawing.Size(75, 25);
-            this.btnThem.TabIndex = 2;
-            this.btnThem.Text = "Thêm";
-            this.btnThem.UseVisualStyleBackColor = true;
-            this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
+            btnThem.Location = new Point(107, 100);
+            btnThem.Margin = new Padding(4, 5, 4, 5);
+            btnThem.Name = "btnThem";
+            btnThem.Size = new Size(100, 38);
+            btnThem.TabIndex = 2;
+            btnThem.Text = "Thêm";
+            btnThem.UseVisualStyleBackColor = true;
+            btnThem.Click += btnThem_Click;
             // 
             // txtTenLoai
             // 
-            this.txtTenLoai.Location = new System.Drawing.Point(135, 25);
-            this.txtTenLoai.Name = "txtTenLoai";
-            this.txtTenLoai.Size = new System.Drawing.Size(520, 20);
-            this.txtTenLoai.TabIndex = 1;
+            txtTenLoai.Location = new Point(180, 38);
+            txtTenLoai.Margin = new Padding(4, 5, 4, 5);
+            txtTenLoai.Name = "txtTenLoai";
+            txtTenLoai.Size = new Size(692, 27);
+            txtTenLoai.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(20, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Tên loại sản phẩm (*):";
+            label1.AutoSize = true;
+            label1.Location = new Point(27, 43);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(152, 20);
+            label1.TabIndex = 0;
+            label1.Text = "Tên loại sản phẩm (*):";
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.dgvLoaiSanPham);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(0, 110);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(684, 301);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Danh sách loại sản phẩm";
+            groupBox2.Controls.Add(dgvLoaiSanPham);
+            groupBox2.Dock = DockStyle.Fill;
+            groupBox2.Location = new Point(0, 184);
+            groupBox2.Margin = new Padding(4, 5, 4, 5);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new Padding(4, 5, 4, 5);
+            groupBox2.Size = new Size(912, 448);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Danh sách loại sản phẩm";
             // 
             // dgvLoaiSanPham
             // 
-            this.dgvLoaiSanPham.AllowUserToAddRows = false;
-            this.dgvLoaiSanPham.AllowUserToDeleteRows = false;
-            this.dgvLoaiSanPham.ReadOnly = true;
-            this.dgvLoaiSanPham.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvLoaiSanPham.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLoaiSanPham.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ID,
-            this.TenLoai});
-            this.dgvLoaiSanPham.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvLoaiSanPham.Location = new System.Drawing.Point(3, 16);
-            this.dgvLoaiSanPham.MultiSelect = false;
-            this.dgvLoaiSanPham.Name = "dgvLoaiSanPham";
-            this.dgvLoaiSanPham.Size = new System.Drawing.Size(678, 282);
-            this.dgvLoaiSanPham.TabIndex = 0;
+            dgvLoaiSanPham.AllowUserToAddRows = false;
+            dgvLoaiSanPham.AllowUserToDeleteRows = false;
+            dgvLoaiSanPham.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvLoaiSanPham.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvLoaiSanPham.Columns.AddRange(new DataGridViewColumn[] { ID, TenLoai });
+            dgvLoaiSanPham.Dock = DockStyle.Fill;
+            dgvLoaiSanPham.Location = new Point(4, 25);
+            dgvLoaiSanPham.Margin = new Padding(4, 5, 4, 5);
+            dgvLoaiSanPham.MultiSelect = false;
+            dgvLoaiSanPham.Name = "dgvLoaiSanPham";
+            dgvLoaiSanPham.ReadOnly = true;
+            dgvLoaiSanPham.RowHeadersWidth = 51;
+            dgvLoaiSanPham.Size = new Size(904, 418);
+            dgvLoaiSanPham.TabIndex = 0;
             // 
             // ID
             // 
-            this.ID.DataPropertyName = "ID";
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
+            ID.DataPropertyName = "ID";
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.ReadOnly = true;
             // 
             // TenLoai
             // 
-            this.TenLoai.DataPropertyName = "TenLoai";
-            this.TenLoai.HeaderText = "Tên loại sản phẩm";
-            this.TenLoai.Name = "TenLoai";
-            this.TenLoai.ReadOnly = true;
+            TenLoai.DataPropertyName = "TenLoai";
+            TenLoai.HeaderText = "Tên loại sản phẩm";
+            TenLoai.MinimumWidth = 6;
+            TenLoai.Name = "TenLoai";
+            TenLoai.ReadOnly = true;
             // 
             // frmLoaiSanPham
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 411);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Name = "frmLoaiSanPham";
-            this.Text = "Loại sản phẩm";
-            this.Load += new System.EventHandler(this.frmLoaiSanPham_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvLoaiSanPham)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(912, 632);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
+            Margin = new Padding(4, 5, 4, 5);
+            Name = "frmLoaiSanPham";
+            Text = "Loại sản phẩm";
+            Load += frmLoaiSanPham_Load;
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvLoaiSanPham).EndInit();
+            ResumeLayout(false);
 
         }
 
@@ -217,5 +256,7 @@
         private System.Windows.Forms.DataGridView dgvLoaiSanPham;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn TenLoai;
+        private Button btnXuat;
+        private Button btnNhap;
     }
 }
