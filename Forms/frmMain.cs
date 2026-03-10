@@ -1,4 +1,5 @@
 ﻿using QuanLyBanHang.Data.Entity;
+using QuanLyBanHang.Reports;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace QuanLyBanHang.Forms
         frmNhanVien nhanVien = null;
         frmHoaDon hoaDon = null;
         frmDangNhap dangNhap = null;
+        
+        frmThongKeSanPham thongKeSanPham = null;
+        
         string hoVaTenNhanVien = "";
 
         private void DangNhap()
@@ -227,7 +231,7 @@ namespace QuanLyBanHang.Forms
             DangNhap();
         }
 
-        
+
 
         private void mnuDangXuat_Click(object sender, EventArgs e)
         {
@@ -241,6 +245,20 @@ namespace QuanLyBanHang.Forms
         private void mnuDangNhap_Click(object sender, EventArgs e)
         {
             DangNhap();
+        }
+
+        private void mnuThongKeSanPham_Click(object sender, EventArgs e)
+        {
+            if (thongKeSanPham == null || thongKeSanPham.IsDisposed)
+            {
+                thongKeSanPham = new frmThongKeSanPham();
+                thongKeSanPham.MdiParent = this;
+                thongKeSanPham.Show();
+            }
+            else
+            {
+                thongKeSanPham.Activate();
+            }
         }
     }
 }

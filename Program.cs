@@ -1,4 +1,5 @@
 using QuanLyBanHang.Forms;
+using QuanLyBanHang.Reports;
 
 namespace QuanLyBanHang
 {
