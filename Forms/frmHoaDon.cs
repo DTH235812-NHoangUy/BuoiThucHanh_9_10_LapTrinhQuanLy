@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QuanLyBanHang.Data;
 using QuanLyBanHang.Data.Entity;
+using QuanLyBanHang.Reports;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -153,7 +154,8 @@ namespace QuanLyBanHang.Forms
                 {
                     using (XLWorkbook wb = new XLWorkbook())
                     {
-                        var hdData = context.HoaDon.Select(h => new {
+                        var hdData = context.HoaDon.Select(h => new
+                        {
                             ID = h.ID,
                             NhanVien = h.NhanVien.HoVaTen,
                             KhachHang = h.KhachHang.HoVaTen,
@@ -162,7 +164,8 @@ namespace QuanLyBanHang.Forms
                         }).ToList();
                         wb.Worksheets.Add(ToDataTable(hdData), "HoaDon");
 
-                        var ctData = context.HoaDon_ChiTiet.Select(c => new {
+                        var ctData = context.HoaDon_ChiTiet.Select(c => new
+                        {
                             ID = c.HoaDonID,
                             TenSanPham = c.SanPham.TenSanPham,
                             SoLuongBan = c.SoLuongBan,
@@ -252,5 +255,17 @@ namespace QuanLyBanHang.Forms
                 using (frmHoaDon_ChiTiet f = new frmHoaDon_ChiTiet(id)) { f.ShowDialog(); LoadData(); }
             }
         }
+
+        private void btnInHoaDon_Click(object sender, EventArgs e)
+        {
+            
+        {
+            id = Convert.ToInt32(dgvHoaDon.CurrentRow.Cells["ID"].Value.ToString());
+            using (frmInHoaDon inHoaDon = new frmInHoaDon(id))
+            {
+                inHoaDon.ShowDialog();
+            }
+        }
+    }
     }
 }
