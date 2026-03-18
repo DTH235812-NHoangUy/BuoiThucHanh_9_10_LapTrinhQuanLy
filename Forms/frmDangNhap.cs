@@ -14,6 +14,7 @@ namespace QuanLyBanHang.Forms
         public frmDangNhap()
         {
             InitializeComponent();
+            this.KeyPreview = true;
         }
 
         private void btnDangNhap_Click(object sender, EventArgs e)
@@ -32,6 +33,16 @@ namespace QuanLyBanHang.Forms
             {
                 btnDangNhap_Click(sender, e);
             }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F1)
+            {
+                Help.ShowHelp(this, "https://dth235812-nhoanguy.github.io/BuoiThucHanh9_10_LapTrinhQuanLy/");
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

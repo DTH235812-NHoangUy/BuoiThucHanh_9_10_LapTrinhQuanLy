@@ -201,7 +201,7 @@ namespace QuanLyBanHang.Forms
         }
 
         private void btnXuat_Click(object sender, EventArgs e)
-           
+
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Title = "Xuất dữ liệu Hãng Sản Xuất ra tập tin Excel";
@@ -251,5 +251,14 @@ namespace QuanLyBanHang.Forms
                 }
             }
         }
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F1)
+            {
+                Help.ShowHelp(this, "https://dth235812-nhoanguy.github.io/BuoiThucHanh9_10_LapTrinhQuanLy/");
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
- }
+}
