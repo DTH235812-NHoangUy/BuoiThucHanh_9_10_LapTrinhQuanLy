@@ -39,7 +39,7 @@ namespace QuanLyBanHang.Forms
         {
             if (keyData == Keys.F1)
             {
-                Help.ShowHelp(this, "https://dth235812-nhoanguy.github.io/BuoiThucHanh9_10_LapTrinhQuanLy/");
+                Help.ShowHelp(this, "https://dth235812-nhoanguy.github.io/BuoiThucHanh_9_10_LapTrinhQuanLy/");
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
